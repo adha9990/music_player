@@ -30,7 +30,7 @@
         "
         @click="play()"
       >
-        {{ is_play ? "播放" : "暫停" }}
+        {{ controls.play ? "播放" : "暫停" }}
       </button>
       <span>
         <button
@@ -47,14 +47,14 @@
           "
           @click="muted()"
         >
-          {{ is_muted ? "取消靜音" : "靜音" }}
+          {{ controls.muted ? "取消靜音" : "靜音" }}
         </button>
         <input
           class="cursor-pointer"
           type="range"
           min="0"
           max="100"
-          v-model="volume"
+          v-model="controls.volume"
           @change="change_volume()"
         />
       </span>
@@ -63,6 +63,8 @@
 </template>
 
 <script>
+import { onMounted, ref, reactive } from "vue";
+
 export default {
   props: {
     src: {
@@ -70,34 +72,44 @@ export default {
       required: true,
     },
   },
-  data() {
-    return {
-      video: null,
-      is_play: true,
-      is_muted: false,
+  setup() {
+    const video = ref("");
+    const controls = reactive({
+      play: true,
+      muted: false,
       volume: 100,
-    };
-  },
-  mounted() {
-    this.video = document.getElementById("video");
-  },
-  methods: {
-    play() {
-      if (this.is_play) {
-        this.video.play();
+    });
+
+    onMounted(() => {
+      video.value = document.getElementById("video");
+    });
+
+    const play = () => {
+      if (controls.play) {
+        video.value.play();
       } else {
-        this.video.pause();
+        video.value.pause();
       }
-      this.is_play = !this.is_play;
-    },
-    muted() {
-      this.is_muted = !this.is_muted;
-      this.video.muted = this.is_muted;
-    },
-    change_volume() {
-      this.is_muted = this.volume == 0;
-      this.video.volume = this.volume / 100;
-    },
+      controls.play = !controls.play;
+    };
+
+    const muted = () => {
+      controls.muted = !controls.muted;
+      video.value.muted = controls.muted;
+    };
+
+    const change_volume = () => {
+      video.value.muted = controls.volume == 0;
+      video.value.volume = controls.volume / 100;
+    };
+
+    return {
+      video,
+      controls,
+      play,
+      muted,
+      change_volume,
+    };
   },
 };
 </script>

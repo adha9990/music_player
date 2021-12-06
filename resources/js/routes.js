@@ -3,8 +3,9 @@ import { createRouter, createWebHistory } from "vue-router";
 import Home from "./views/Home.vue";
 import VideoManage from "./views/VideoManage.vue";
 
-import VideoUpload from "./components/VideoUpload.vue";
 import VideoManageTable from "./components/VideoManageTable.vue";
+import VideoUpload from "./components/VideoUpload.vue";
+import VideoEdit from "./components/VideoEdit.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -27,6 +28,11 @@ const router = createRouter({
                     name: "videos.upload",
                     path: "/upload",
                     component: VideoUpload,
+                },
+                {
+                    name: "videos.edit",
+                    path: "/edit/:id",
+                    component: VideoEdit,
                 },
             ],
         },

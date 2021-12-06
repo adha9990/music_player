@@ -145,8 +145,8 @@
                 whitespace-no-wrap
               "
             >
-              <button
-                @click="editVideo(video.id)"
+              <router-link
+                :to="{ name: 'videos.edit', params: { id: video.id } }"
                 class="
                   inline-flex
                   items-center
@@ -171,7 +171,7 @@
                 "
               >
                 Edit
-              </button>
+              </router-link>
               <button
                 @click="deleteVideo(video.id)"
                 class="
@@ -216,10 +216,6 @@ export default {
 
     onMounted(getVideos);
 
-    const editVideo = async (id) => {
-      alert("敬請期待!");
-    };
-
     const deleteVideo = async (id) => {
       if (!window.confirm("Are you sure ?")) return;
 
@@ -229,7 +225,6 @@ export default {
 
     return {
       videos,
-      editVideo,
       deleteVideo,
     };
   },
